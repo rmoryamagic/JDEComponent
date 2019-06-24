@@ -1,0 +1,62 @@
+{
+  "title": "JD Edwards EnterpriseOne",
+  "description": "elastic.io component for the JD Edwards EnterpriseOne",
+  "docsUrl": "https://github.com/elasticio/jde-e1-component-java",
+  "credentials": {
+    "fields": {
+      "server": {
+        "label": "Server",
+        "required": true,
+        "viewClass": "TextFieldWithNoteView",
+        "note": "Please, provide server."
+      },
+      "port": {
+        "label": "Port",
+        "required": true,
+        "viewClass": "TextFieldWithNoteView",
+        "note": "Please, provide server port."
+      },
+      "user": {
+        "label": "User",
+        "required": true,
+        "viewClass": "TextFieldWithNoteView",
+        "note": "Please, provide username."
+      },
+      "password": {
+        "label": "Password",
+        "required": true,
+        "viewClass": "PasswordFieldView",
+        "note": "Please, provide password."
+      },
+      "environment": {
+        "label": "Environment",
+        "required": true,
+        "viewClass": "TextFieldWithNoteView",
+        "note": "Please, provide environment value."
+      },
+      "function": {
+        "label": "Function",
+        "required": true,
+        "viewClass": "TextFieldWithNoteView",
+        "note": "Please, provide existing function name for validating connection."
+      }
+    },
+    "verifier": "io.elastic.jdee1.JdeCredentialsVerifier"
+  },
+  "actions": {
+    "executeFunction": {
+      "main": "io.elastic.jdee1.actions.executeFunction",
+      "title": "Execute Function",
+      "description": "Execute Function with parameters",
+      "fields": {
+        "name": {
+          "viewClass": "TextFieldWithNoteView",
+          "label": "Function",
+          "required": true,
+          "note": "Please, provide name of function"
+        }
+      },
+      "dynamicMetadata": "io.elastic.jdee1.FunctionParamsProvider"
+    }
+  }
+}

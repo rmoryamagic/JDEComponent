@@ -1,0 +1,47 @@
+group 'io.elastic.jdee1'
+version '1.0'
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+apply plugin: 'groovy'
+
+sourceCompatibility = 1.6
+targetCompatibility = 1.8
+
+repositories {
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots"
+    }
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    compile files("lib/Base_JAR.jar")
+    compile files("lib/JdeNet_JAR.jar")
+    compile files("lib/ManagementAgent_JAR.jar")
+    compile files("lib/System_JAR.jar")
+    compile files("lib/commons-httpclient-3.0.jar")
+    compile files("lib/commons-logging.jar")
+    compile files("lib/log4j.jar")
+
+    compile "io.elastic:sailor-jvm:2.1.0"
+    compile "org.glassfish.jersey.core:jersey-client:2.25.1"
+    compile "org.glassfish.jersey.media:jersey-media-json-processing:2.25.1"
+
+    compile 'com.fasterxml.jackson.core:jackson-core:2.7.3'
+    compile 'com.fasterxml.jackson.core:jackson-annotations:2.7.3'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.7.3'
+
+    testCompile "org.spockframework:spock-core:1.1-groovy-2.4"
+}
+
+uploadArchives {
+    repositories {
+        mavenLocal()
+    }
+}
+
+wrapper {
+    gradleVersion = '2.0'
+}
