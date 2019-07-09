@@ -41,7 +41,7 @@ public class executeFunction implements Module {
      logger.info("Request body: {}", body);
     final JsonObjectBuilder result = Json.createObjectBuilder();
     JsonObject execResult = Json.createObjectBuilder().build();
-
+  logger.info("Response data {}", execResult);
     try {
       execResult = jdeinstance.jbExecute_actionPerformed(configuration, body, snapshot);
     } catch (ParserConfigurationException e) {
