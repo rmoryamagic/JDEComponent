@@ -192,7 +192,8 @@ public class Utils {
     final String port = getRequiredNonEmptyString(config, CFG_PORT, "Port is required");
     XMLRequest xml = new XMLRequest(server, Integer.parseInt(port), request);
     String response = xml.execute();
-
+    
+   logger.info("Request Log: {}", request);
    logger.info("Response Log: {}", response);
 
     return response;
