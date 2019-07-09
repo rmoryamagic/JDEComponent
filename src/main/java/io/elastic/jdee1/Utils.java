@@ -193,7 +193,7 @@ public class Utils {
     XMLRequest xml = new XMLRequest(server, Integer.parseInt(port), request);
     String response = xml.execute();
 
-   logger.info("Request Log: {}", xml);
+   logger.info("Request Log: {}", xml.toString());
    logger.info("Response Log: {}", response);
 
     return response;
