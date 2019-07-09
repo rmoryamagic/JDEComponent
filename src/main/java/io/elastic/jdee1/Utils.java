@@ -186,14 +186,10 @@ public class Utils {
       throws UnsupportedEncodingException, IOException {
     String request = convertXMLDocumentToString(node);
     
-    logger.info("Request Log: {}", request);
-
     final String server = getRequiredNonEmptyString(config, CFG_SERVER, "Server is required");
     final String port = getRequiredNonEmptyString(config, CFG_PORT, "Port is required");
     XMLRequest xml = new XMLRequest(server, Integer.parseInt(port), request);
     String response = xml.execute();
-
-   logger.info("Request Log: {}", xml.toString());
    logger.info("Response Log: {}", response);
 
     return response;

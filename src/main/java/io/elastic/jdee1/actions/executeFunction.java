@@ -38,6 +38,7 @@ public class executeFunction implements Module {
     final JsonObject configuration = parameters.getConfiguration();
 
     Utils jdeinstance = new Utils();
+     logger.info("Request body: {}", body);
     final JsonObjectBuilder result = Json.createObjectBuilder();
     JsonObject execResult = Json.createObjectBuilder().build();
 
