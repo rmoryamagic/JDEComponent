@@ -54,7 +54,6 @@ public class Utils {
   public static final String ERROR_MESSAGE = "error_message";
   public static final String ERROR_CODE = "error_code";
   public static final String RESULT = "result";
-  public static final String PT_SESSION = "pt_session";
 
   HashMap<Integer, String> errorReturnCodes = new HashMap<Integer, String>() {{
     put(1, "root XML element is not a jdeRequest or jdeResponse.");
@@ -186,10 +185,14 @@ public class Utils {
   private String executeXMLRequest(final JsonObject config, Node node)
       throws UnsupportedEncodingException, IOException {
     String request = convertXMLDocumentToString(node);
+    
     final String server = getRequiredNonEmptyString(config, CFG_SERVER, "Server is required");
     final String port = getRequiredNonEmptyString(config, CFG_PORT, "Port is required");
     XMLRequest xml = new XMLRequest(server, Integer.parseInt(port), request);
-    return xml.execute();
+    String response = xml.execute();
+   logger.info("Response Log: {}", response);
+
+    return response;
   }
 
   private Node createTemplateRequestXMLDocument(final JsonObject config, final JsonObject snapshot,
@@ -304,7 +307,7 @@ public class Utils {
       }
     }
 
-    setCredentialsInXMLDocument(config, snapshot, body, false);
+    setCredentialsInXMLDocument(config, snapshot, false);
     String response = null;
 
     try {
@@ -339,7 +342,7 @@ public class Utils {
       logger.info("Session is invalid. Error message: \"{}\". Try to get a new session",
           errorReturnCodes.get(Integer.parseInt(returnCode)));
 
-      setCredentialsInXMLDocument(config, snapshot, body, true);
+      setCredentialsInXMLDocument(config, snapshot, true);
       response = null;
 
       try {
@@ -442,7 +445,7 @@ public class Utils {
     }
   }
 
-  private void setCredentialsInXMLDocument(JsonObject config, JsonObject snapshot, JsonObject body,
+  private void setCredentialsInXMLDocument(JsonObject config, JsonObject snapshot,
       boolean resetSession) {
     NodeList requestlist = XMLDoc.getElementsByTagName("jdeRequest");
     Node request = requestlist.item(0);
@@ -450,7 +453,7 @@ public class Utils {
     String user = getUser(config, snapshot);
     String password = getPassword(config, snapshot);
     String env = getEnv(config, snapshot);
-    String session = (resetSession) ? "" : getSession(snapshot, body);
+    String session = (resetSession) ? "" : getSession(snapshot);
 
     try {
       NamedNodeMap attributes = request.getAttributes();
@@ -658,15 +661,11 @@ public class Utils {
     return port;
   }
 
-  private static String getSession(JsonObject snapshot, JsonObject body) {
+  private static String getSession(JsonObject snapshot) {
     String session = "";
-    if (snapshot.containsKey(SESSION)
+    if (snapshot.containsKey("session")
         && Utils.getNonNullString(snapshot, SESSION).length() != 0) {
       session = snapshot.getString(SESSION);
-    }
-    if (body.containsKey(PT_SESSION)
-        && Utils.getNonNullString(body, PT_SESSION).length() != 0) {
-      session = body.getString(PT_SESSION);
     }
     return session;
   }
