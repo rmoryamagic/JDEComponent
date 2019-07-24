@@ -38,15 +38,11 @@ public class executeFunction implements Module {
     final JsonObject configuration = parameters.getConfiguration();
 
     Utils jdeinstance = new Utils();
-     logger.info("Request body: {}", body);
     final JsonObjectBuilder result = Json.createObjectBuilder();
     JsonObject execResult = Json.createObjectBuilder().build();
-    
 
     try {
       execResult = jdeinstance.jbExecute_actionPerformed(configuration, body, snapshot);
-       logger.info("Response data {}", execResult);
-       
     } catch (ParserConfigurationException e) {
       e.printStackTrace();
     } catch (IOException e) {
@@ -83,8 +79,6 @@ public class executeFunction implements Module {
     if (Utils.getNonNullString(execResult, Utils.SESSION).length() != 0) {
       session = execResult.getString(Utils.SESSION);
     }
-
-    execResult = Utils.removeProperty(execResult, Utils.SESSION);
 
     snapshot = Json.createObjectBuilder().add(Utils.CFG_USER, user)
         .add(Utils.CFG_PASSWORD, password)

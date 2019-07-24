@@ -1,5 +1,5 @@
 group 'io.elastic.jdee1'
-version '1.0'
+version '1.1'
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'eclipse'
@@ -25,7 +25,7 @@ dependencies {
     compile files("lib/commons-logging.jar")
     compile files("lib/log4j.jar")
 
-    compile "io.elastic:sailor-jvm:2.1.0"
+    compile "io.elastic:sailor-jvm:2.1.1"
     compile "org.glassfish.jersey.core:jersey-client:2.25.1"
     compile "org.glassfish.jersey.media:jersey-media-json-processing:2.25.1"
 

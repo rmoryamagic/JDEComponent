@@ -59,48 +59,30 @@
       "dynamicMetadata": "io.elastic.jdee1.FunctionParamsProvider"
     },
     "verifyCredentials": {
-      "main": "io.elastic.jdee1.actions.JdeCredentialsVerifier",
+      "main": "io.elastic.jdee1.actions.verifyCredential",
       "title": "Verify Credentials",
-      "description": "Verify JDEE Credentials",
+      "description": "Execute Function for Verify Credentials",
       "fields": {
-        "server": {
-          "label": "Server",
-          "required": true,
+        "name": {
           "viewClass": "TextFieldWithNoteView",
-          "note": "Please, provide server."
-        },
-        "port": {
-          "label": "Port",
-          "required": true,
-          "viewClass": "TextFieldWithNoteView",
-          "note": "Please, provide server port."
-        },
-        "user": {
-          "label": "User",
-          "required": true,
-          "viewClass": "TextFieldWithNoteView",
-          "note": "Please, provide username."
-        },
-        "password": {
-          "label": "Password",
-          "required": true,
-          "viewClass": "PasswordFieldView",
-          "note": "Please, provide password."
-        },
-        "environment": {
-          "label": "Environment",
-          "required": true,
-          "viewClass": "TextFieldWithNoteView",
-          "note": "Please, provide environment value."
-        },
-        "function": {
           "label": "Function",
           "required": true,
-          "viewClass": "TextFieldWithNoteView",
-          "note": "Please, provide existing function name for validating connection."
+          "note": "Please, provide name of function"
+        }
+      },
+      "metadata": {
+        "in": {},
+        "out": {
+          "type": "object",
+          "properties": {
+            "result": {
+              "type": "object",
+              "required": true,
+              "title": "result"
+            }
+          }
         }
       }
-      
     }
   }
 }

@@ -35,6 +35,15 @@ In the Function field please provide name of any existing function.
 The input json schema generates automatically for provided function.
 #### Output json schema location
 The output json schema generates automatically for provided function.
+### Verify Credentials
+> Execute Function for Verify Credentials
+![image](https://user-images.githubusercontent.com/40201204/47239527-3f270880-d3ee-11e8-9445-07c13ce58b20.png)
+#### Function
+In the Function field please provide name of any existing function.
+#### Input json schema
+There is no input metadata.
+#### Output json schema location
+The output json schema generates automatically for provided function.
 ## Additional info
 Important! The interaction with JD Edwards EnterpriseOne instance is exclusive. There will be locked connection port at server's side during process of interaction. Therefore, you should be very careful with real-time flows - they are blocking any other interactions with the instance until stop of them. 
 
