@@ -1,6 +1,6 @@
 package io.elastic.jdee1;
 
-import io.elastic.api.Module;
+import io.elastic.api.CredentialsVerifier;
 import io.elastic.api.InvalidCredentialsException;
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -8,7 +8,7 @@ import javax.json.JsonObjectBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class JdeCredentialsVerifier implements Module {
+public class JdeCredentialsVerifier implements CredentialsVerifier {
 
   private static final Logger logger = LoggerFactory.getLogger(JdeCredentialsVerifier.class);
 

@@ -49,13 +49,14 @@ public class FunctionParamsProvider implements DynamicMetadataProvider, SelectMo
     utils.getTemplate_actionPerformed(configuration, snapshot.build(), body.build());
 
     String ret;
+
+    field.add("title", Utils.PT_SESSION).add("type", "string");
+    properties.add(Utils.PT_SESSION, field.build());
+
     for (int i = 0; i < utils.BSFNParmsModel.getRowCount(); ++i) {
       ret = (String) utils.BSFNParmsModel.getValueAt(i, 0);
       String value = (String) utils.BSFNParmsModel.getValueAt(i, 1);
-
-      String type = "string";
-      field.add("title", ret).add("type", type);
-
+      field.add("title", ret).add("type", "string");
       properties.add(ret, field.build());
     }
 
