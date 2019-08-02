@@ -23,12 +23,14 @@ public class JdeCredentialsVerifier implements CredentialsVerifier {
     logger.info("About to verify provided JDE E1 Credentials");
 
     Utils jdeinstance = new Utils();
+    final Message message = parameters.getMessage();
+
     final JsonObjectBuilder result = Json.createObjectBuilder();
     final JsonObjectBuilder snapshot = Json.createObjectBuilder();
-    final JsonObjectBuilder body = Json.createObjectBuilder();
+    final JsonObject body = message.getBody();//Json.createObjectBuilder();
     try {
       result.add("result",
-          jdeinstance.getTemplate_actionPerformed(configuration, snapshot.build(), body.build()));
+          jdeinstance.getTemplate_actionPerformed(configuration, snapshot.build(), body);
     } catch (Exception e) {
       throw new InvalidCredentialsException("Failed to connect to instance", e);
     } finally {
