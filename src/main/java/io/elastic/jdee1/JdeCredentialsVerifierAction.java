@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 
 public class JdeCredentialsVerifierAction implements Module {
 
-  private static final Logger logger = LoggerFactory.getLogger(JdeCredentialsVerifier.class);
+  private static final Logger logger = LoggerFactory.getLogger(JdeCredentialsVerifierAction.class);
 
   /**
      * Executes the actions's logic by sending a request to the verify creden API and emitting response to the platform.
