@@ -8,7 +8,7 @@ import javax.json.JsonObjectBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class JdeCredentialsVerifier implements CredentialsVerifier {
+public class JdeCredentialsVerifiercopy implements CredentialsVerifier {
 
   private static final Logger logger = LoggerFactory.getLogger(JdeCredentialsVerifier.class);
 
