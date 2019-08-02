@@ -19,7 +19,7 @@ public class JdeCredentialsVerifier implements CredentialsVerifier {
      */
 
   @Override
-  public void verify(JsonObject configuration,parameters) throws InvalidCredentialsException {
+  public void verify(JsonObject configuration,ExecutionParameters parameters) throws InvalidCredentialsException {
     logger.info("About to verify provided JDE E1 Credentials");
 
     Utils jdeinstance = new Utils();
