@@ -68,42 +68,43 @@
         "server": {
           "label": "Server",
           "required": true,
-          "viewClass": "TextFieldWithNoteView",
+          "type": "string",
           "note": "Please, provide server."
+          
         },
         "port": {
           "label": "Port",
           "required": true,
-          "viewClass": "TextFieldWithNoteView",
+          "type": "string",
           "note": "Please, provide server port."
         },
         "user": {
           "label": "User",
           "required": true,
-          "viewClass": "TextFieldWithNoteView",
           "note": "Please, provide username."
         },
         "password": {
           "label": "Password",
+          "type": "string",
           "required": true,
-          "viewClass": "PasswordFieldView",
           "note": "Please, provide password."
         },
         "environment": {
           "label": "Environment",
+          "type": "string",
           "required": true,
-          "viewClass": "TextFieldWithNoteView",
           "note": "Please, provide environment value."
         },
         "function": {
           "label": "Function",
+          "type": "string",
           "required": true,
-          "viewClass": "TextFieldWithNoteView",
           "note": "Please, provide existing function name for validating connection."
         }
       }
       
-    }
+    },
+    "out":{}
   }
 }
   }
