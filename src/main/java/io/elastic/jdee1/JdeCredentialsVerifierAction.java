@@ -8,7 +8,7 @@ import javax.json.JsonObjectBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class JdeCredentialsVerifier implements CredentialsVerifier {
+public class JdeCredentialsVerifier implements Module {
 
   private static final Logger logger = LoggerFactory.getLogger(JdeCredentialsVerifier.class);
 
@@ -19,12 +19,12 @@ public class JdeCredentialsVerifier implements CredentialsVerifier {
      */
 
   @Override
-  public void verify(JsonObject configuration,ExecutionParameters parameters) throws InvalidCredentialsException {
+  public void execute(ExecutionParameters parameters) throws InvalidCredentialsException {
     logger.info("About to verify provided JDE E1 Credentials");
 
     Utils jdeinstance = new Utils();
     final Message message = parameters.getMessage();
-
+    final JsonObject configuration = parameters.getConfiguration();
     final JsonObjectBuilder result = Json.createObjectBuilder();
     final JsonObjectBuilder snapshot = Json.createObjectBuilder();
     final JsonObject body = message.getBody();//Json.createObjectBuilder();
