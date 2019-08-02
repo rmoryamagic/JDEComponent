@@ -29,7 +29,7 @@ public class JdeCredentialsVerifier implements CredentialsVerifier {
       if (result != null) {
         logger.info("Closing connection");
       } else {
-        logger.error("Failed to closed connection");
+        logger.error("Failed to close connection");
       }
     }
   }

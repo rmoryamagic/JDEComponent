@@ -1,6 +1,5 @@
 package io.elastic.jdee1;
 
-import com.jdedwards.system.xml.XMLRequest;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -27,6 +26,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -34,6 +34,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import com.jdedwards.system.xml.XMLRequest;
 
 public class Utils {
 
@@ -54,7 +55,15 @@ public class Utils {
   public static final String ERROR_MESSAGE = "error_message";
   public static final String ERROR_CODE = "error_code";
   public static final String RESULT = "result";
-  public static final String PT_SESSION = "pt_session";
+  public static final String PT_SESSION = "pt_session"; // passthrough session value
+
+  /* keys below for verifyCredentials action only */
+  public static final String CFG_USER_FUNC = "userFunc";
+  public static final String CFG_PASSWORD_FUNC = "passwordFunc";
+  public static final String CFG_ENV_FUNC = "environmentFunc";
+  public static final String CFG_FUNCTION_FUNC = "functionFunc"; // function name for verification @ creds
+  public static final String CFG_SERVER_FUNC = "serverFunc";
+  public static final String CFG_PORT_FUNC = "portFunc";
 
   HashMap<Integer, String> errorReturnCodes = new HashMap<Integer, String>() {{
     put(1, "root XML element is not a jdeRequest or jdeResponse.");
@@ -169,9 +178,8 @@ public class Utils {
           String[] row = new String[]{x.getNodeValue(), "", ""};
 
           String name = x.getNodeValue();
-          String type = "string";
           field.add("title", name)
-              .add("type", type);
+               .add("type", "string");
           properties.add(name, field);
 
           BSFNParmsModel.addRow(row);
@@ -186,8 +194,8 @@ public class Utils {
   private String executeXMLRequest(final JsonObject config, Node node)
       throws UnsupportedEncodingException, IOException {
     String request = convertXMLDocumentToString(node);
-    final String server = getRequiredNonEmptyString(config, CFG_SERVER, "Server is required");
-    final String port = getRequiredNonEmptyString(config, CFG_PORT, "Port is required");
+    final String server = getServer(config, null);
+    final String port = getPort(config, null);
     XMLRequest xml = new XMLRequest(server, Integer.parseInt(port), request);
     return xml.execute();
   }
@@ -196,10 +204,9 @@ public class Utils {
       final JsonObject body)
       throws ParserConfigurationException {
     Node node = null;
-    final String user = getRequiredNonEmptyString(config, CFG_USER, "User is required");
-    final String password = getRequiredNonEmptyString(config, CFG_PASSWORD, "Password is required");
-    final String environment = getRequiredNonEmptyString(config, CFG_ENV,
-        "Environment is required");
+    final String user = getUser(config, snapshot);
+    final String password = getPassword(config, snapshot);
+    final String environment = getEnv(config, snapshot);
     final String function = getFunction(config, snapshot, body);
     DocumentBuilder Builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
     Document Doc = Builder.newDocument();
@@ -244,7 +251,6 @@ public class Utils {
     return doc;
   }
 
-
   private String convertXMLDocumentToString(Node node) {
     try {
       Source source = new DOMSource(node);
@@ -287,6 +293,7 @@ public class Utils {
     errors = "";
 
     String ret;
+    String pt_session;
     JsonObjectBuilder properties = Json.createObjectBuilder();
     JsonObjectBuilder field = Json.createObjectBuilder();
     JsonObjectBuilder result = Json.createObjectBuilder();
@@ -298,9 +305,11 @@ public class Utils {
     StringBuilder setString = new StringBuilder();
     int indexParam = 0;
 
-    for (Map.Entry<String, JsonValue> entry : body.entrySet()) {
-      if (entry.getValue().toString().compareTo("") != 0) {
-        setParameterValue(entry.getKey().toString(), ((JsonString) entry.getValue()).getString());
+    if (body != null) {
+      for (Map.Entry<String, JsonValue> entry : body.entrySet()) {
+        if (entry.getValue().toString().compareTo("") != 0) {
+          setParameterValue(entry.getKey().toString(), ((JsonString) entry.getValue()).getString());
+        }
       }
     }
 
@@ -390,6 +399,8 @@ public class Utils {
       }
     }
 
+    pt_session = getSessionIDFromXMLDocument(XMLResponseDoc);
+
     NodeList parms = XMLResponseDoc.getElementsByTagName("param");
     for (int i = 0; i < parms.getLength(); ++i) {
       node = parms.item(i);
@@ -403,15 +414,15 @@ public class Utils {
           BSFNParmsModel.setValueAt(textNode.getNodeValue(), index, 2);
 
           String name = x.getNodeValue();
-          String type = "string";
           field.add("title", name)
-              .add("type", type);
+              .add("type", "string");
           result.add(name, textNode.getNodeValue());
 
         }
       }
     }
-    properties.add(Utils.SESSION, session);
+    properties.add(Utils.PT_SESSION, pt_session);
+    properties.add(Utils.SESSION, (session != null && !session.isEmpty()) ? session : getSession(snapshot, body));
     properties.add(Utils.ERROR_CODE, returnCode);
     properties.add(Utils.ERROR_MESSAGE, "");
     properties.add(Utils.RESULT, result.build());
@@ -432,19 +443,25 @@ public class Utils {
         Node textNode = null;
         if ((textNode = node.getFirstChild()) == null) {
           textNode = XMLDoc.createTextNode(value);
-          node.appendChild((Node) textNode);
+          node.appendChild(textNode);
         }
 
         if (textNode != null) {
-          ((Node) textNode).setNodeValue(value);
+          textNode.setNodeValue(value);
         }
       }
     }
   }
 
   private void setCredentialsInXMLDocument(JsonObject config, JsonObject snapshot, JsonObject body,
-      boolean resetSession) {
-    NodeList requestlist = XMLDoc.getElementsByTagName("jdeRequest");
+      boolean resetSession) throws DOMException {
+    NodeList requestlist;
+    try {
+      requestlist = XMLDoc.getElementsByTagName("jdeRequest");
+    } catch (Exception err) {
+      throw new RuntimeException("Connection to the instance failed");
+    }
+
     Node request = requestlist.item(0);
 
     String user = getUser(config, snapshot);
@@ -576,7 +593,14 @@ public class Utils {
     } else if (config.containsKey(CFG_USER)
         && Utils.getNonNullString(config, CFG_USER).length() != 0) {
       user = config.getString(CFG_USER);
-    } else {
+    }
+
+    if (config.containsKey(CFG_USER_FUNC)
+        && Utils.getNonNullString(config, CFG_USER_FUNC).length() != 0) {
+      user = config.getString(CFG_USER_FUNC);
+    }
+
+    if (user.length() == 0) {
       throw new RuntimeException("Username is required");
     }
     return user;
@@ -590,7 +614,14 @@ public class Utils {
     } else if (config.containsKey(CFG_PASSWORD)
         && Utils.getNonNullString(config, CFG_PASSWORD).length() != 0) {
       password = config.getString(CFG_PASSWORD);
-    } else {
+    }
+
+    if (config.containsKey(CFG_PASSWORD_FUNC)
+        && Utils.getNonNullString(config, CFG_PASSWORD_FUNC).length() != 0) {
+      password = config.getString(CFG_PASSWORD_FUNC);
+    }
+
+    if (password.length() == 0) {
       throw new RuntimeException("Password is required");
     }
     return password;
@@ -604,7 +635,14 @@ public class Utils {
     } else if (config.containsKey(CFG_ENV)
         && Utils.getNonNullString(config, CFG_ENV).length() != 0) {
       env = config.getString(CFG_ENV);
-    } else {
+    }
+
+    if (config.containsKey(CFG_ENV_FUNC)
+        && Utils.getNonNullString(config, CFG_ENV_FUNC).length() != 0) {
+      env = config.getString(CFG_ENV_FUNC);
+    }
+
+    if (env.length() == 0) {
       throw new RuntimeException("Environment is required");
     }
     return env;
@@ -612,10 +650,7 @@ public class Utils {
 
   private static String getFunction(JsonObject config, JsonObject snapshot, JsonObject body) {
     String function = "";
-    if (body.containsKey(CFG_FUNCTION)
-        && Utils.getNonNullString(body, CFG_FUNCTION).length() != 0) {
-      function = config.getString(CFG_FUNCTION);
-    } else if (snapshot.containsKey(CFG_FUNCTION)
+    if (snapshot.containsKey(CFG_FUNCTION)
         && Utils.getNonNullString(snapshot, CFG_FUNCTION).length() != 0) {
       function = snapshot.getString(CFG_FUNCTION);
     } else if (config.containsKey(FUNCTION_NAME)
@@ -624,7 +659,14 @@ public class Utils {
     } else if (config.containsKey(CFG_FUNCTION)
         && Utils.getNonNullString(config, CFG_FUNCTION).length() != 0) {
       function = config.getString(CFG_FUNCTION);
-    } else {
+    }
+
+    if (config.containsKey(CFG_FUNCTION_FUNC)
+        && Utils.getNonNullString(config, CFG_FUNCTION_FUNC).length() != 0) {
+      function = config.getString(CFG_FUNCTION_FUNC);
+    }
+
+    if (function.length() == 0) {
       throw new RuntimeException("Function is required");
     }
     return function;
@@ -632,13 +674,20 @@ public class Utils {
 
   private static String getServer(JsonObject config, JsonObject snapshot) {
     String server = "";
-    if (snapshot.containsKey(CFG_SERVER)
+    if (snapshot != null && snapshot.containsKey(CFG_SERVER)
         && Utils.getNonNullString(snapshot, CFG_SERVER).length() != 0) {
       server = snapshot.getString(CFG_SERVER);
     } else if (config.containsKey(CFG_SERVER)
         && Utils.getNonNullString(config, CFG_SERVER).length() != 0) {
       server = config.getString(CFG_SERVER);
-    } else {
+    }
+
+    if (config.containsKey(CFG_SERVER_FUNC)
+        && Utils.getNonNullString(config, CFG_SERVER_FUNC).length() != 0) {
+      server = config.getString(CFG_SERVER_FUNC);
+    }
+
+    if (server.length() == 0 ) {
       throw new RuntimeException("Server is required");
     }
     return server;
@@ -646,13 +695,20 @@ public class Utils {
 
   private static String getPort(JsonObject config, JsonObject snapshot) {
     String port = "";
-    if (snapshot.containsKey(CFG_PORT)
+    if (snapshot != null && snapshot.containsKey(CFG_PORT)
         && Utils.getNonNullString(snapshot, CFG_PORT).length() != 0) {
       port = snapshot.getString(CFG_PORT);
     } else if (config.containsKey(CFG_PORT)
         && Utils.getNonNullString(config, CFG_PORT).length() != 0) {
       port = config.getString(CFG_PORT);
-    } else {
+    }
+
+    if (config.containsKey(CFG_PORT_FUNC)
+        && Utils.getNonNullString(config, CFG_PORT_FUNC).length() != 0) {
+      port = config.getString(CFG_PORT_FUNC);
+    }
+
+    if (port.length() == 0) {
       throw new RuntimeException("Port is required");
     }
     return port;
@@ -664,7 +720,7 @@ public class Utils {
         && Utils.getNonNullString(snapshot, SESSION).length() != 0) {
       session = snapshot.getString(SESSION);
     }
-    if (body.containsKey(PT_SESSION)
+    if (body!= null && body.containsKey(PT_SESSION)
         && Utils.getNonNullString(body, PT_SESSION).length() != 0) {
       session = body.getString(PT_SESSION);
     }
