@@ -64,46 +64,74 @@
       "description": "Verify JDEE Credentials",
       "metadata": {
         "in":{
-      "properties": {
-        "server": {
-          "label": "Server",
-          "required": true,
-          "type": "string",
-          "note": "Please, provide server."
-          
-        },
-        "port": {
-          "label": "Port",
-          "required": true,
-          "type": "string",
-          "note": "Please, provide server port."
-        },
-        "user": {
-          "label": "User",
-          "required": true,
-          "note": "Please, provide username."
-        },
-        "password": {
-          "label": "Password",
-          "type": "string",
-          "required": true,
-          "note": "Please, provide password."
-        },
-        "environment": {
-          "label": "Environment",
-          "type": "string",
-          "required": true,
-          "note": "Please, provide environment value."
-        },
-        "function": {
-          "label": "Function",
-          "type": "string",
-          "required": true,
-          "note": "Please, provide existing function name for validating connection."
-        }
-      }
-      
-    },
+             "type": "object",
+            "title": "The Root Schema",
+             "required": [
+               "server",
+               "port",
+             "User",
+              "password",
+              "environment",
+              "function"
+            ],
+            "properties": {
+              "server": {
+               "type": "string",
+                "title": "Server",
+                "default": "",
+                "examples": [
+                  ""
+               ],
+               "pattern": "^(.*)$"
+             },
+             "port": {
+             "type": "string",
+                "title": "Port",
+               "default": "",
+                "examples": [
+                 ""
+              ],
+               "pattern": "^(.*)$"
+              },
+              "User": {
+                "type": "string",
+               "title": "User",
+                "default": "",
+                "examples": [
+                ""
+               ],
+               "pattern": "^(.*)$"
+             },
+              "password": {
+                "$id": "#/properties/password",
+                "type": "string",
+                "title": "Password",
+                "default": "",
+                "examples": [
+                  ""
+                ],
+                "pattern": "^(.*)$"
+              },
+              "environment": {
+                "type": "string",
+                "title": "Environment",
+              "default": "",
+               "examples": [
+                 ""
+                ],
+               "pattern": "^(.*)$"
+              },
+              "function": {
+              "type": "string",
+               "title": "Function",
+               "default": "",
+                "examples": [
+                  ""
+                ],
+                "pattern": "^(.*)$"
+             }
+           }
+          },
     "out":{}
   }
 }
