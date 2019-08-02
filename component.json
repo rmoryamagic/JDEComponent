@@ -59,7 +59,7 @@
       "dynamicMetadata": "io.elastic.jdee1.FunctionParamsProvider"
     },
     "verifyCredentials": {
-      "main": "io.elastic.jdee1.JdeCredentialsVerifier",
+      "main": "io.elastic.jdee1.JdeCredentialsVerifierAction",
       "title": "Verify Credentials",
       "description": "Verify JDEE Credentials",
       "metadata": {
