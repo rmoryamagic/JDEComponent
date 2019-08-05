@@ -24,11 +24,11 @@ public class JdeCredentialsVerifier implements Module {
     logger.info("About to verify provided JDE E1 Credentials");
 
     Utils jdeinstance = new Utils();
-    final Message message = parameters.getMessage();
+    //final Message message = parameters.getMessage();
     final JsonObject configuration = parameters.getConfiguration();
     final JsonObjectBuilder result = Json.createObjectBuilder();
     final JsonObjectBuilder snapshot = Json.createObjectBuilder();
-    final JsonObjectBuilder body = message.getBody();
+    final JsonObjectBuilder body = Json.createObjectBuilder();
     try {
       result.add("result",
           jdeinstance.getTemplate_actionPerformed(configuration, snapshot.build(), body.build()));
