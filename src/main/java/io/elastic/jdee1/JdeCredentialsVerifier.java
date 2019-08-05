@@ -34,10 +34,11 @@ public class JdeCredentialsVerifier implements Module {
           jdeinstance.getTemplate_actionPerformed(configuration, snapshot.build(), body));
     } catch (Exception e) {
       //throw new InvalidCredentialsException("Failed to connect to instance", e);
-       System.out.println(e.getMessage());
+       System.out.println("Verify Credentials"+e.getMessage());
     } finally {
       if (result != null) {
         logger.info("Closing connection");
+        logger.info(result);
       } else {
         logger.error("Failed to closed connection");
       }
