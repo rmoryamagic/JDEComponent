@@ -96,7 +96,7 @@ public class executeFunction implements Module {
 
     if(execResult.error_code!=0)
     {
-     throw new IllegalStateException(execResult);
+     throw new IllegalStateException(execResult.toString());
     }
     final Message data
         = new Message.Builder().body(execResult).build();
