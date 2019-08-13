@@ -93,6 +93,11 @@ public class executeFunction implements Module {
     parameters.getEventEmitter().emitSnapshot(snapshot);
 
     logger.info("Emitting data {}", execResult);
+
+    if(execResult.error_code!=0)
+    {
+     throw new IllegalStateException(execResult);
+    }
     final Message data
         = new Message.Builder().body(execResult).build();
     // emitting the message to the platform
