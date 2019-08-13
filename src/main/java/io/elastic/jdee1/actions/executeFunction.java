@@ -94,7 +94,7 @@ public class executeFunction implements Module {
 
     logger.info("Emitting data {}", execResult);
 
-    if(execResult.error_code!=0)
+    if(execResult)
     {
      throw new IllegalStateException(execResult.toString());
     }
