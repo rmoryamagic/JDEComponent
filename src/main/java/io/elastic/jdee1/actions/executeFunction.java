@@ -93,14 +93,9 @@ public class executeFunction implements Module {
     parameters.getEventEmitter().emitSnapshot(snapshot);
 
     logger.info("Emitting data {}", execResult);
-
-    if(true)
-    {
-     throw new IllegalStateException(execResult.toString());
-    }
-    // final Message data
-    //     = new Message.Builder().body(execResult).build();
-    // // emitting the message to the platform
-    // parameters.getEventEmitter().emitData(data);
+    final Message data
+        = new Message.Builder().body(execResult).build();
+    // emitting the message to the platform
+    parameters.getEventEmitter().emitData(data);
   }
 }
