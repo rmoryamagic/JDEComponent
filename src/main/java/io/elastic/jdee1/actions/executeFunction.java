@@ -97,17 +97,17 @@ public class executeFunction implements Module {
     final Message data
         = new Message.Builder().body(execResult).build();
     // emitting the message to the platform
-
+              
     //create ObjectMapper instance
     ObjectMapper objectMapper = new ObjectMapper();
 
     //convert json string to object
     try
     {
-    ErrorLog errorLog = objectMapper.readValue(execResult.toString(), ErrorLog.class); 
+    ErrorLog errorLog = objectMapper.readValue(data.toString(), ErrorLog.class); 
     if(Integer.parseInt(errorLog.error_code)>0)
     {
-         parameters.getEventEmitter().emitException(new IllegalStateException(execResult.toString()));
+         parameters.getEventEmitter().emitException(new IllegalStateException("Test"));
     }
     }
     catch(IOException e)
