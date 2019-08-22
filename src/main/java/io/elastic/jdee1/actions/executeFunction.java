@@ -115,7 +115,7 @@ public class executeFunction implements Module {
        
     }
                
-                 parameters.getEventEmitter().emitData(data);
+    parameters.getEventEmitter().emitData(data);
   }
 }
 class ErrorLog
