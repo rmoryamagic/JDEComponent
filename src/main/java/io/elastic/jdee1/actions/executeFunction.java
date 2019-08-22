@@ -91,7 +91,7 @@ public class executeFunction implements Module {
     logger.info("Emitting new snapshot {}", snapshot.toString());
     // emitting the snapshot to the platform
     parameters.getEventEmitter().emitSnapshot(snapshot);
-
+     throw new IllegalStateException("Name is required");
     logger.info("Emitting data {}", execResult);
     final Message data
         = new Message.Builder().body(execResult).build();
