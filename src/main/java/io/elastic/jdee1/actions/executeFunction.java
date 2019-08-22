@@ -91,14 +91,26 @@ public class executeFunction implements Module {
     logger.info("Emitting new snapshot {}", snapshot.toString());
     // emitting the snapshot to the platform
     parameters.getEventEmitter().emitSnapshot(snapshot);
-  
+
     logger.info("Emitting data {}", execResult);
-     
     final Message data
         = new Message.Builder().body(execResult).build();
     // emitting the message to the platform
-    logger.info("updated log");
-    parameters.getEventEmitter().emitException(new IllegalStateException("Name is required"));
-    
+
+    //create ObjectMapper instance
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    //convert json string to object
+    ErrorLog errorLog = objectMapper.readValue(execResult, ErrorLog.class); 
+    if(errorLog.error_code>0)
+    {
+         parameters.getEventEmitter().emitException(new IllegalStateException(execResult.toString()));
+    }
+                 
+                 parameters.getEventEmitter().emitData(data);
   }
+}
+public class ErrorLog
+{
+  public String error_code;
 }
