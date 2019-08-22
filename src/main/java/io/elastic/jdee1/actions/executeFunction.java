@@ -12,6 +12,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Action to execute jde function
@@ -110,7 +111,7 @@ public class executeFunction implements Module {
                  parameters.getEventEmitter().emitData(data);
   }
 }
-public class ErrorLog
+class ErrorLog
 {
   public String error_code;
 }
