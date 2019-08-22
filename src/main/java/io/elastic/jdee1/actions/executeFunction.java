@@ -103,7 +103,7 @@ public class executeFunction implements Module {
 
     //convert json string to object
     ErrorLog errorLog = objectMapper.readValue(execResult.toString(), ErrorLog.class); 
-    if(parseInt(errorLog.error_code)>0)
+    if(Integer.parseInt(errorLog.error_code)>0)
     {
          parameters.getEventEmitter().emitException(new IllegalStateException(execResult.toString()));
     }
