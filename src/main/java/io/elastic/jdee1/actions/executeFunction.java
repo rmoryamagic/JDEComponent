@@ -97,6 +97,7 @@ public class executeFunction implements Module {
     final Message data
         = new Message.Builder().body(execResult).build();
     // emitting the message to the platform
+    logger.info("updated log");
     parameters.getEventEmitter().emitException(new IllegalStateException("Name is required"));
     
   }
