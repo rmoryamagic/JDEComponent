@@ -102,12 +102,19 @@ public class executeFunction implements Module {
     ObjectMapper objectMapper = new ObjectMapper();
 
     //convert json string to object
+    try
+    {
     ErrorLog errorLog = objectMapper.readValue(execResult.toString(), ErrorLog.class); 
     if(Integer.parseInt(errorLog.error_code)>0)
     {
          parameters.getEventEmitter().emitException(new IllegalStateException(execResult.toString()));
     }
-                 
+    }
+    catch(IOException e)
+    {
+       
+    }
+               
                  parameters.getEventEmitter().emitData(data);
   }
 }
