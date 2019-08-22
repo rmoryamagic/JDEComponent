@@ -114,7 +114,6 @@ public class executeFunction implements Module {
     {
        
     }
-               
     parameters.getEventEmitter().emitData(data);
   }
 }
