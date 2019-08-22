@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 
 /**
  * Action to execute jde function
@@ -100,23 +99,20 @@ public class executeFunction implements Module {
     // emitting the message to the platform
               
     //create ObjectMapper instance
-    ObjectMapper objectMapper = new ObjectMapper();
+    //ObjectMapper objectMapper = new ObjectMapper();
 
     //convert json string to object
     try
-    {
-      String  jsonString =execResult.toString(); 
-      ErrorLog errorLog=new ErrorLog();
-       Gson gson = new Gson();  
-        errorLog= gson.fromJson(jsonString,ErrorLog.class); 
-    // ErrorLog errorLog=new ErrorLog();
+    { 
+    ErrorLog errorLog=new ErrorLog();
+    errorLog=data.getBody(ErrorLog.class);
     // errorLog = objectMapper.readValue(data.toString(), ErrorLog.class); 
     if(Integer.parseInt(errorLog.error_code)>0)
     {
          parameters.getEventEmitter().emitException(new IllegalStateException("Test"));
     }
     }
-    catch(IOException e)
+    catch(JMSException e)
     {
        
     }
