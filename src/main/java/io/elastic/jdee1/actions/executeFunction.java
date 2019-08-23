@@ -120,8 +120,8 @@ public class executeFunction implements Module {
     // }
     try
     { 
+    ObjectMapper objectMapper = new ObjectMapper();
     ErrorLog errorLog=new ErrorLog();
-    // errorLog=data.getBody(ErrorLog.class);
     errorLog = objectMapper.readValue(execResult.toString(), ErrorLog.class);
     parameters.getEventEmitter().emitException(new IllegalStateException(errorLog.value));
     }
