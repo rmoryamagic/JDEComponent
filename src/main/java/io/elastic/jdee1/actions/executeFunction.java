@@ -115,11 +115,8 @@ public class executeFunction implements Module {
     {
       parameters.getEventEmitter().emitException(new IllegalStateException(e.getMessage()));
     } 
-    finally
-    {
-      // emitting the message to the platform
-      parameters.getEventEmitter().emitData(data);
-    }
+    // emitting the message to the platform
+    parameters.getEventEmitter().emitData(data);
   }
 }
 class ErrorLog
