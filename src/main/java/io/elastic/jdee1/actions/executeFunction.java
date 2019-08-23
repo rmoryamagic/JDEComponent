@@ -100,10 +100,14 @@ public class executeFunction implements Module {
     // emitting the message to the platform
     
     //parameters.getEventEmitter().emitData(data);
+    try{
     String jsonData=execResult.toString();
     ObjectMapper mapper=new ObjectMapper();
     ErrorLog errorLog=mapper.readValue(jsonData, ErrorLog.class);
     parameters.getEventEmitter().emitException(new IllegalStateException(errorLog.value));
+    }
+    catch(IOException e)
+    {} 
       
   }
 }
