@@ -99,39 +99,9 @@ public class executeFunction implements Module {
     // emitting the message to the platform
     
     //parameters.getEventEmitter().emitData(data);
-    //create ObjectMapper instance
-    //ObjectMapper objectMapper = new ObjectMapper();
-
-    //convert json string to object
-    // try
-    // { 
-    // ErrorLog errorLog=new ErrorLog();
-    // errorLog=data.getBody(ErrorLog.class);
-    // // errorLog = objectMapper.readValue(data.toString(), ErrorLog.class); 
-    // if(Integer.parseInt(errorLog.error_code)>0)
-    // {
-    //      parameters.getEventEmitter().emitException(new IllegalStateException("Test"));
-    // }
-    // }
-    // catch(JMSException e)
-    // {
-       
-    // }
-    // try
-    // { 
-    // String s=data.toString();
-    // JSONParser parser = new JSONParser();
-    // Object obj=parser.parse(s);
-    // ObjectMapper objectMapper = new ObjectMapper();
-    // ErrorLog errorLog=new ErrorLog();
-    // errorLog = objectMapper.readValue(obj, ErrorLog.class);
+    
     parameters.getEventEmitter().emitException(new IllegalStateException(execResult.toString()));
-    // }
-    // catch(IOException e)
-    // {
-
-    // }
-    //int errorNumber=data.body.error_code;
+    
     
   }
 }
