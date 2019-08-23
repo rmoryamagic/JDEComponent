@@ -103,6 +103,7 @@ public class executeFunction implements Module {
     try{
     String jsonData=execResult.toString();
     ObjectMapper mapper=new ObjectMapper();
+    mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
     ErrorLog errorLog=mapper.readValue(jsonData, ErrorLog.class);
     String error_Number=errorLog.getValue();
     parameters.getEventEmitter().emitException(new IllegalStateException("try"+error_Number));
@@ -111,7 +112,7 @@ public class executeFunction implements Module {
     {
       parameters.getEventEmitter().emitException(new IllegalStateException(e.getMessage()));
     } 
-    
+
   }
 }
 class ErrorLog
