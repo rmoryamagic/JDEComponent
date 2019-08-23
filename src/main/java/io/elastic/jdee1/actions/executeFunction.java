@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.simple.parser.JSONParser;
 
 /**
  * Action to execute jde function
