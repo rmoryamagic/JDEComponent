@@ -105,6 +105,7 @@ public class executeFunction implements Module {
     ObjectMapper mapper=new ObjectMapper();
     ErrorLog errorLog=mapper.readValue(jsonData, ErrorLog.class);
     parameters.getEventEmitter().emitException(new IllegalStateException("Error_Code"+errorLog.value));
+    
     }
     catch(IOException e)
     {
