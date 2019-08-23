@@ -113,7 +113,6 @@ public class executeFunction implements Module {
     {
       parameters.getEventEmitter().emitException(new IllegalStateException(e.getMessage()));
     } 
-
   }
 }
 class ErrorLog
