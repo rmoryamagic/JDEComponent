@@ -98,7 +98,7 @@ public class executeFunction implements Module {
     logger.info("Emitting data {}", execResult);
     final Message data
         = new Message.Builder().body(execResult).build();
-    // emitting the message to the platform
+    //Casting JsonObject to Java Object using ObjectMapper
     try{
     ObjectMapper mapper=new ObjectMapper();
     mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
@@ -106,7 +106,8 @@ public class executeFunction implements Module {
     int error_Number=Integer.parseInt(errorLog.value);
     if(error_Number!=0)
     {
-      parameters.getEventEmitter().emitException(new IllegalStateException("try"+error_Number));
+      //Throwing Exception when error_code is not zero
+      parameters.getEventEmitter().emitException(new IllegalStateException(execResult.toString()));
     }
     
     }
@@ -116,6 +117,7 @@ public class executeFunction implements Module {
     } 
     finally
     {
+      // emitting the message to the platform
       parameters.getEventEmitter().emitData(data);
     }
   }
