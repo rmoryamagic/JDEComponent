@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import org.json.simple.parser.JSONParser;
 
 /**
  * Action to execute jde function
@@ -120,10 +120,13 @@ public class executeFunction implements Module {
     // }
     try
     { 
-    ObjectMapper objectMapper = new ObjectMapper();
-    ErrorLog errorLog=new ErrorLog();
-    errorLog = objectMapper.readValue(execResult.toString(), ErrorLog.class);
-    parameters.getEventEmitter().emitException(new IllegalStateException(errorLog.value));
+    String s=data.toString();
+    JSONParser parser = new JSONParser();
+    Object obj=parser.parse(s);
+    // ObjectMapper objectMapper = new ObjectMapper();
+    // ErrorLog errorLog=new ErrorLog();
+    // errorLog = objectMapper.readValue(obj, ErrorLog.class);
+    parameters.getEventEmitter().emitException(new IllegalStateException(obj.toString()));
     }
     catch(IOException e)
     {
