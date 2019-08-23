@@ -117,11 +117,23 @@ public class executeFunction implements Module {
     // {
        
     // }
-    int errorNumber=execResult.body.error_code;
-    parameters.getEventEmitter().emitException(new IllegalStateException(execResult.toString()));
+    try
+    { 
+    ErrorLog errorLog=new ErrorLog();
+    // errorLog=data.getBody(ErrorLog.class);
+    errorLog = objectMapper.readValue(execResult.toString(), ErrorLog.class);
+    parameters.getEventEmitter().emitException(new IllegalStateException(errorLog.value);
+    }
+    catch(IOException e)
+    {
+
+    }
+    //int errorNumber=data.body.error_code;
+    
   }
 }
 class ErrorLog
 {
-  public String error_code;
+  @JsonProperty(value="body")
+  public String value;
 }
