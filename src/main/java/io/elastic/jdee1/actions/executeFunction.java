@@ -122,7 +122,7 @@ public class executeFunction implements Module {
     ErrorLog errorLog=new ErrorLog();
     // errorLog=data.getBody(ErrorLog.class);
     errorLog = objectMapper.readValue(execResult.toString(), ErrorLog.class);
-    parameters.getEventEmitter().emitException(new IllegalStateException(errorLog.value);
+    parameters.getEventEmitter().emitException(new IllegalStateException(errorLog.value));
     }
     catch(IOException e)
     {
