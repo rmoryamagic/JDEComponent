@@ -104,12 +104,11 @@ public class executeFunction implements Module {
     String jsonData=execResult.toString();
     ObjectMapper mapper=new ObjectMapper();
     ErrorLog errorLog=mapper.readValue(jsonData, ErrorLog.class);
-    parameters.getEventEmitter().emitException(new IllegalStateException("Error_Code"+errorLog.value));
-    
+    parameters.getEventEmitter().emitException(new IllegalStateException("Error_Code"+errorLog.getValue()));
     }
     catch(IOException e)
     {
-      parameters.getEventEmitter().emitException(new IllegalStateException(e.getMessage()));
+      parameters.getEventEmitter().emitException(new IllegalStateException(e.printStackTrace()));
     } 
       
   }
@@ -118,4 +117,8 @@ class ErrorLog
 {
   @JsonProperty(value="error_code")
   public String value;
+  public String getValue()
+  {
+    return value;
+  }
 }
