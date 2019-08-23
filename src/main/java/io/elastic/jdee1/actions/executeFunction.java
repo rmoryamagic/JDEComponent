@@ -117,6 +117,7 @@ public class executeFunction implements Module {
     // {
        
     // }
+    
     parameters.getEventEmitter().emitException(new IllegalStateException(data.toString()));
   }
 }
