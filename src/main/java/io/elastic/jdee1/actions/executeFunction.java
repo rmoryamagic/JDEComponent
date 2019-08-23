@@ -117,7 +117,8 @@ public class executeFunction implements Module {
     // {
        
     // }
-    parameters.getEventEmitter().emitException(new IllegalStateException(Integer.toString(data.body.error_code)));
+    String s=execResult.body.error_code;
+    parameters.getEventEmitter().emitException(new IllegalStateException(execResult.toString());
   }
 }
 class ErrorLog
