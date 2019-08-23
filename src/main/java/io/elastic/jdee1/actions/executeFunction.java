@@ -118,26 +118,26 @@ public class executeFunction implements Module {
     // {
        
     // }
-    try
-    { 
-    String s=data.toString();
-    JSONParser parser = new JSONParser();
-    Object obj=parser.parse(s);
+    // try
+    // { 
+    // String s=data.toString();
+    // JSONParser parser = new JSONParser();
+    // Object obj=parser.parse(s);
     // ObjectMapper objectMapper = new ObjectMapper();
     // ErrorLog errorLog=new ErrorLog();
     // errorLog = objectMapper.readValue(obj, ErrorLog.class);
-    parameters.getEventEmitter().emitException(new IllegalStateException(obj.toString()));
-    }
-    catch(IOException e)
-    {
+    parameters.getEventEmitter().emitException(new IllegalStateException(execResult.toString()));
+    // }
+    // catch(IOException e)
+    // {
 
-    }
+    // }
     //int errorNumber=data.body.error_code;
     
   }
 }
 class ErrorLog
 {
-  @JsonProperty(value="body")
+  // @JsonProperty(value="body")
   public String value;
 }
