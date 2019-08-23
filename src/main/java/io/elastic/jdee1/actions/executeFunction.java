@@ -99,28 +99,29 @@ public class executeFunction implements Module {
     final Message data
         = new Message.Builder().body(execResult).build();
     // emitting the message to the platform
-    
-    //parameters.getEventEmitter().emitData(data);
     try{
-    String jsonData=execResult.toString();
     ObjectMapper mapper=new ObjectMapper();
     mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-    ErrorLog errorLog=mapper.readValue(jsonData, ErrorLog.class);
-    String error_Number=errorLog.getValue();
-    parameters.getEventEmitter().emitException(new IllegalStateException("try"+error_Number));
+    ErrorLog errorLog=mapper.readValue(execResult.toString(), ErrorLog.class);
+    int error_Number=Integer.parseInt(errorLog.value);
+    if(error_Number!=0)
+    {
+      parameters.getEventEmitter().emitException(new IllegalStateException("try"+error_Number));
+    }
+    
     }
     catch(IOException e)
     {
       parameters.getEventEmitter().emitException(new IllegalStateException(e.getMessage()));
     } 
+    finally
+    {
+      parameters.getEventEmitter().emitData(data);
+    }
   }
 }
 class ErrorLog
 {
   @JsonProperty(value="error_code")
   public String value;
-  public String getValue()
-  {
-    return value;
-  }
 }
