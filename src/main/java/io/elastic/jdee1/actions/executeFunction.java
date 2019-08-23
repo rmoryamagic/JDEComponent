@@ -108,7 +108,7 @@ public class executeFunction implements Module {
     }
     catch(IOException e)
     {
-      parameters.getEventEmitter().emitException(new IllegalStateException("Catch"));
+      parameters.getEventEmitter().emitException(new IllegalStateException(e.getMessage()));
     } 
       
   }
