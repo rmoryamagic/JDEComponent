@@ -104,13 +104,14 @@ public class executeFunction implements Module {
     mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
     ErrorLog errorLog=mapper.readValue(execResult.toString(), ErrorLog.class);
     //int error_Number=Integer.parseInt(errorLog.value);
-   
+    String s=errorLog.err_message;
     String e_message=errorLog.err_message.substring(errorLog.err_message.indexOf('W') , errorLog.err_message.indexOf('g')+1);
+    String s1=s.substring(s.indexOf('W'),s.indexOf('g')+1);
 
     if(errorLog.err_code!="0" && e_message!="Warning")
     {
       //Throwing Exception when error_code is not zero
-      parameters.getEventEmitter().emitException(new IllegalStateException(execResult.toString()));
+      parameters.getEventEmitter().emitException(new IllegalStateException(execResult.toString()+e_message+s1));
     }
     
     }
