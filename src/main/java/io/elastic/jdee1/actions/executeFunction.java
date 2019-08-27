@@ -111,7 +111,6 @@ public class executeFunction implements Module {
       //Throwing Exception when error_code is not zero
       parameters.getEventEmitter().emitException(new IllegalStateException(execResult.toString()));
     }
-    
     }
     catch(IOException e)
     {
