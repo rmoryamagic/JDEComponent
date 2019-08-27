@@ -105,7 +105,6 @@ public class executeFunction implements Module {
     ErrorLog errorLog=mapper.readValue(execResult.toString(), ErrorLog.class);
     //int error_Number=Integer.parseInt(errorLog.value);
     String e_message=errorLog.err_message.substring(errorLog.err_message.indexOf('W') , errorLog.err_message.indexOf('g')+1);
-
     if(!errorLog.err_code.equals("0") && !e_message.equals("Warning"))
     {
       //Throwing Exception when error_code is not zero
