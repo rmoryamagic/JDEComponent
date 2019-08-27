@@ -103,8 +103,11 @@ public class executeFunction implements Module {
     ObjectMapper mapper=new ObjectMapper();
     mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
     ErrorLog errorLog=mapper.readValue(execResult.toString(), ErrorLog.class);
-    int error_Number=Integer.parseInt(errorLog.value);
-    if(error_Number!=0)
+    //int error_Number=Integer.parseInt(errorLog.value);
+   
+    String err_message=errorLog.err_message.substring(errorLog.err_message.indexOf('W') , errorLog.err_message.indexOf('g')+1);
+    
+    if(errorLog.err_code!="0" && errorLog.err_message!="Warning")
     {
       //Throwing Exception when error_code is not zero
       parameters.getEventEmitter().emitException(new IllegalStateException(execResult.toString()));
@@ -122,5 +125,7 @@ public class executeFunction implements Module {
 class ErrorLog
 {
   @JsonProperty(value="error_code")
-  public String value;
+  public String err_code;
+  @JsonProperty(value="error_message")
+  public String err_message;
 }
