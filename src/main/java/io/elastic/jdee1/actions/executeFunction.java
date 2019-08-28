@@ -104,7 +104,7 @@ public class executeFunction implements Module {
     mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
     ErrorLog errorLog=mapper.readValue(execResult.toString(), ErrorLog.class);
     //int error_Number=Integer.parseInt(errorLog.value);
-    if(errorLog.err_message.length>0)
+    if(errorLog.err_message.length()>0)
     {
       String e_message=errorLog.err_message.substring(0,7);
       //Throwing Exception when error_code is not zero
