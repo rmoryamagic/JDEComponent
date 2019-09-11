@@ -83,6 +83,7 @@ public class executeFunction implements Module {
       session = execResult.getString(Utils.SESSION);
     }
 
+/*
     snapshot = Json.createObjectBuilder().add(Utils.CFG_USER, user)
         .add(Utils.CFG_PASSWORD, password)
         .add(Utils.CFG_ENV, env)
@@ -94,6 +95,7 @@ public class executeFunction implements Module {
     logger.info("Emitting new snapshot {}", snapshot.toString());
     // emitting the snapshot to the platform
     parameters.getEventEmitter().emitSnapshot(snapshot);
+*/
 
     logger.info("Emitting data {}", execResult);
     final Message data
