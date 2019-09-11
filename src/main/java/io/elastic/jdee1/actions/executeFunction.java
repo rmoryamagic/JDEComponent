@@ -112,14 +112,20 @@ public class executeFunction implements Module {
       //Throwing Exception when error_code is not zero
       if(!errorLog.err_code.equals("0") && !e_message.equals("Warning"))
       parameters.getEventEmitter().emitException(new IllegalStateException(execResult.toString()));
+      else
+       parameters.getEventEmitter().emitData(data);
+      
+    }else
+    {
+       // emitting the message to the platform
+    parameters.getEventEmitter().emitData(data);
     }
   }
     catch(IOException e)
     {
       parameters.getEventEmitter().emitException(new IllegalStateException(e.getMessage()));
     } 
-    // emitting the message to the platform
-    parameters.getEventEmitter().emitData(data);
+   
   }
 } 
 class ErrorLog
